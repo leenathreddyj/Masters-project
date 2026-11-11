@@ -1,0 +1,155 @@
+<nav class="nav" aria-label="Sections">
+  <a href="#top" data-s="top">Swarm</a>
+  <a href="#data" data-s="data">Data</a>
+  <a href="#granules" data-s="granules">Granules</a>
+  <a href="#tune" data-s="tune">Tune live</a>
+  <a href="#predict" data-s="predict">Predict</a>
+  <a href="#study" data-s="study">Study</a>
+  <button class="tog" id="theme" aria-label="Toggle light and dark theme" title="Toggle theme">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+  </button>
+</nav>
+
+<header class="hero" id="top">
+  <canvas id="swarm" aria-hidden="true"></canvas>
+  <div class="wrap hero-in">
+    <p class="kicker">Master's final project &middot; Granular neural network &middot; Particle swarm optimization</p>
+    <h1>A <em>working</em> model, tuned <u>live</u>.</h1>
+    <p class="lede">This page is the system itself, not a slide deck. A fuzzy-granulated neural network and two swarm optimizers run in your browser on the real Pima diabetes records. Explore the data, watch the swarms search, then score a patient with the models you just trained.</p>
+    <span class="hint"><i></i>Move your cursor. The swarm treats it as its global best.</span>
+    <div class="hero-stats">
+      <div><b>768</b><span>real patient records</span></div>
+      <div><b>32</b><span>inputs: 8 crisp + 24 fuzzy</span></div>
+      <div><b>5</b><span>hyperparameters searched</span></div>
+      <div><b id="hs-live">&hellip;</b><span>live test accuracy (manual GNN)</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="data">
+  <div class="head">
+    <p class="kicker">01 &middot; The data</p>
+    <h2>768 patients, one question</h2>
+    <p>The Pima Indians diabetes records. Pick a measurement and compare the two groups. Several columns store a missing reading as a zero, which the pipeline detects and fills with the training median.</p>
+  </div>
+  <div class="bento">
+    <div class="tile c8">
+      <div class="lab-bar">
+        <div class="seg" id="dfeat" role="group" aria-label="Feature"></div>
+        <label class="chk"><input type="checkbox" id="dclean" checked> Treat zeros as missing</label>
+      </div>
+      <div class="legend" style="margin-bottom:8px"><span><i class="cob"></i>No diabetes</span><span><i class="cor"></i>Diabetes</span></div>
+      <div class="cwrap"><svg class="chart" id="hist" viewBox="0 0 700 300"></svg><div class="tip" id="htip"></div></div>
+    </div>
+    <div class="tile c4">
+      <h3>At a glance</h3>
+      <div class="mtiles" id="dstats"></div>
+      <p class="note" id="dzeros"></p>
+    </div>
+  </div>
+</section>
+
+<section id="granules">
+  <div class="head">
+    <p class="kicker">02 &middot; Granulation</p>
+    <h2>Every measurement becomes three fuzzy ideas</h2>
+    <p>Each scaled feature is described as <em>low</em>, <em>medium</em> and <em>high</em> by overlapping triangles. Drag the marker, or load a real patient, and watch the 32-number input vector change. The overlap is one of the five things the swarm tunes.</p>
+  </div>
+  <div class="bento">
+    <div class="tile c7">
+      <div class="lab-bar" style="margin-bottom:10px">
+        <div class="seg" id="gfeat" role="group" aria-label="Feature to granulate"></div>
+        <button class="btn" id="gpick">Load a real patient</button>
+      </div>
+      <svg class="mf-svg" id="mf" viewBox="0 0 720 280" role="img" aria-label="Fuzzy membership functions for the selected feature"></svg>
+      <div class="slider-row"><div class="ctl"><label for="ov">Granule overlap <b id="ovv">0.50</b></label><input id="ov" type="range" min="15" max="100" value="50"></div></div>
+      <p class="note" id="gsrc"></p>
+    </div>
+    <div class="tile c5">
+      <h3>The network's input</h3>
+      <p class="sub">8 crisp values + 24 granule memberships. Tap a row to inspect that feature.</p>
+      <div class="ftbl" id="ftbl"></div>
+    </div>
+  </div>
+</section>
+
+<section id="tune">
+  <div class="head">
+    <p class="kicker">03 &middot; Live tuning</p>
+    <h2>Watch two swarms search</h2>
+    <p>Two particle swarms start from the identical random population and hunt for the best network settings, scored by 3-fold cross-validation on the 614 training patients. One keeps a fixed inertia weight. The other adapts it to swarm diversity. They run in parallel, right here.</p>
+  </div>
+  <div class="bento">
+    <div class="tile c12">
+      <div class="ctl-row">
+        <div class="ctl"><label for="sw">Swarm size <b id="swv">10</b></label><input id="sw" type="range" min="6" max="16" value="10"></div>
+        <div class="ctl"><label for="it">Iterations <b id="itv">14</b></label><input id="it" type="range" min="4" max="30" value="14"></div>
+        <div class="ctl"><label for="sd">Random seed <b id="sdv">11</b></label><input id="sd" type="range" min="1" max="99" value="11"></div>
+        <div class="acts"><button class="btn pri" id="run">Run both swarms</button><button class="btn" id="stop" disabled>Stop &amp; evaluate</button></div>
+      </div>
+      <p class="note" id="est"></p>
+    </div>
+
+    <div class="tile c8">
+      <div class="lab-bar" style="margin-bottom:6px">
+        <div><h3>Best cross-validated accuracy so far</h3><p class="sub">Higher is better. Each point is one swarm iteration.</p></div>
+        <div class="legend"><span><i class="cob"></i>Baseline (w fixed)</span><span><i class="cor"></i>Enhanced (w adaptive)</span></div>
+      </div>
+      <div class="cwrap"><svg class="chart" id="lc" viewBox="0 0 600 300"></svg></div>
+    </div>
+    <div class="tile c4">
+      <h3>Inertia weight w</h3>
+      <p class="sub">The enhanced swarm lowers w as particles cluster.</p>
+      <div class="cwrap" style="margin-top:8px"><svg class="chart" id="lw" viewBox="0 0 380 300"></svg></div>
+    </div>
+
+    <div class="tile c6 var" id="vb"></div>
+    <div class="tile c6 var" id="ve"></div>
+
+    <div class="c12">
+      <div class="head" style="margin:26px 0 14px"><h3 style="font-size:26px">Held-out test results</h3>
+      <p>Each model is retrained as a 5-seed ensemble on the training split, then scored once on the 154 patients it never saw. The manual model is a hand-picked reference trained at page load.</p></div>
+      <div class="res3" id="res"></div>
+      <p class="note">This is a JavaScript port of the Python pipeline: same architecture, preprocessing, split seed and PSO equations. Live numbers will drift a little from the scikit-learn numbers in the report, and they move with the seed. That variation is the point of testing more than one run.</p>
+    </div>
+  </div>
+</section>
+
+<section id="predict">
+  <div class="head">
+    <p class="kicker">04 &middot; Predict</p>
+    <h2>Score a patient with the models you trained</h2>
+    <p>Edit any measurement, or load a real record and compare what each model says with what actually happened. The tuned models appear here as soon as the swarms finish.</p>
+  </div>
+  <div class="bento">
+    <div class="tile c7">
+      <div class="lab-bar" style="margin-bottom:0">
+        <div class="seg" id="presets" role="group" aria-label="Presets">
+          <button aria-pressed="false" data-v="real">Random real patient</button>
+          <button aria-pressed="false" data-v="healthy">Typical non-diabetic</button>
+          <button aria-pressed="false" data-v="diab">Typical diabetic</button>
+        </div>
+      </div>
+      <div class="pgrid" id="pgrid"></div>
+    </div>
+    <div class="tile c5 pres">
+      <div>
+        <p class="kicker">Estimated diabetes risk</p>
+        <div class="bigp" id="bigp">--</div>
+        <p class="sub" id="pverd" style="margin-top:8px"></p>
+      </div>
+      <div id="pm" style="display:flex; flex-direction:column; gap:12px"></div>
+      <p class="warn">A research prototype trained on 768 records from one population. It is not a diagnostic tool and should not guide medical decisions.</p>
+    </div>
+  </div>
+</section>
+
+<section id="study">
+  <div class="head">
+    <p class="kicker">05 &middot; The full study</p>
+    <h2>The larger Python experiment</h2>
+    <p>The live tuner above is deliberately small so it finishes in seconds. The report's numbers come from the Python pipeline: swarm of 25, 80 iterations, three seeds, and a comparison against classical baselines. Those results are reproduced here.</p>
+  </div>
+  <div class="bento">

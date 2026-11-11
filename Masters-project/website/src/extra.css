@@ -1,0 +1,54 @@
+/* ---------- v4: working-system additions ---------- */
+.ctl-row{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)) auto; gap:18px 26px; align-items:end}
+@media (max-width:820px){.ctl-row{grid-template-columns:1fr 1fr}.ctl-row .acts{grid-column:span 2}}
+@media (max-width:480px){.ctl-row{grid-template-columns:1fr}.ctl-row .acts{grid-column:auto}}
+.acts{display:flex; gap:10px; flex-wrap:wrap}
+.btn:disabled{opacity:.45; cursor:not-allowed; transform:none}
+.note{font-size:13px; color:var(--ink-3); margin-top:12px}
+.var{display:flex; flex-direction:column; gap:10px}
+.var .hdr{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap}
+.prog{height:8px; background:var(--tile-2); border-radius:8px; overflow:hidden}
+.prog i{display:block; height:100%; width:0; transition:width .25s}
+.stat{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+.stat div{background:var(--tile-2); border-radius:12px; padding:10px}
+.stat span{display:block; font-size:11.5px; color:var(--ink-2)}
+.stat b{font-family:var(--f-mono); font-weight:500; font-size:18px}
+.hp{font-family:var(--f-mono); font-size:12.5px; color:var(--ink-2); background:var(--tile-2); padding:10px 12px; border-radius:12px; overflow-wrap:anywhere}
+.res3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px}
+@media (max-width:900px){.res3{grid-template-columns:1fr}}
+.rt{background:var(--tile); border:1px solid var(--line); border-radius:var(--r); padding:22px; min-width:0}
+.rt.pend{opacity:.6}
+.rt .big2{font-family:var(--f-display); font-size:56px; line-height:1; font-weight:700; letter-spacing:-.03em}
+.rt .mm{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-top:14px}
+.rt .mm div{background:var(--tile-2); border-radius:10px; padding:8px 6px; text-align:center}
+.rt .mm span{display:block; font-size:11px; color:var(--ink-2)}
+.rt .mm b{font-family:var(--f-mono); font-weight:500; font-size:14px}
+.cm2{display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-top:12px}
+.cm2 div{border-radius:10px; padding:9px 4px; text-align:center; font-family:var(--f-mono); font-size:19px; background:var(--tile-2)}
+.cm2 div span{display:block; font-family:var(--f-body); font-size:10.5px; color:var(--ink-2)}
+.cm2 .g{background:var(--cobalt-soft)} .cm2 .r{background:var(--coral-soft)}
+.delta{font-family:var(--f-mono); font-size:12px; color:var(--ink-3); margin-top:8px}
+.ftbl{display:grid; grid-template-columns:minmax(80px,1.2fr) repeat(3,1fr); gap:6px; font-size:12.5px; margin-top:12px}
+.ftbl .h{color:var(--ink-3); font-family:var(--f-mono); font-size:11px; text-align:center}
+.ftbl .nm{display:flex; align-items:center; font-size:13px; cursor:pointer; border-radius:8px; padding:0 6px}
+.ftbl .nm.sel{background:var(--tile-2); font-weight:600}
+.ftbl .c{position:relative; height:28px; border-radius:8px; background:var(--tile-2); overflow:hidden; display:grid; place-items:center; font-family:var(--f-mono); font-size:12px}
+.ftbl .c i{position:absolute; left:0; top:0; bottom:0; background:var(--cobalt); opacity:.28}
+.ftbl .c u{text-decoration:none; position:relative}
+.pgrid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 22px; margin-top:16px}
+@media (max-width:560px){.pgrid{grid-template-columns:1fr}}
+.pres{display:flex; flex-direction:column; gap:14px}
+.pm{display:grid; grid-template-columns:110px 1fr 56px; gap:10px; align-items:center; font-size:13px}
+.pm .bar{height:16px; border-radius:9px; background:var(--tile-2); position:relative; overflow:hidden}
+.pm .bar i{position:absolute; left:0; top:0; bottom:0; border-radius:9px; transition:width .25s}
+.pm .bar s{position:absolute; top:0; bottom:0; left:50%; border-left:2px dashed var(--ink-3)}
+.pm .v{font-family:var(--f-mono); text-align:right}
+.bigp{font-family:var(--f-display); font-size:clamp(56px,9vw,92px); line-height:.9; font-weight:700; letter-spacing:-.04em}
+.warn{font-size:12.5px; color:var(--ink-3); border-left:3px solid var(--coral); padding-left:12px}
+.mtiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-top:14px}
+.mtiles div{background:var(--tile-2); border-radius:14px; padding:12px}
+.mtiles span{font-size:12px; color:var(--ink-2); display:block}
+.mtiles b{font-family:var(--f-mono); font-weight:500; font-size:20px}
+.segs{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+.chk{display:inline-flex; gap:8px; align-items:center; font-size:13.5px; color:var(--ink-2); cursor:pointer}
+.chk input{accent-color:var(--cobalt); width:16px; height:16px}
